@@ -1,26 +1,145 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Personal Expense Tracker</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Font: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Custom gradient background */
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        /* Smooth animations */
+        .smooth-transition {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Glass morphism effect */
+        .glass-effect {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        /* Custom shadow utilities */
+        .shadow-elegant {
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        .shadow-soft {
+            box-shadow: 0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04);
+        }
+    </style>
 </head>
-<body class="bg-gray-100 text-gray-900">
-    <nav class="bg-blue-600 text-white px-4 py-3">
-        <div class="container mx-auto flex justify-between">
-            <a href="/" class="font-bold">Tiny Expense Tracker</a>
-            <div>
-                {% if user.is_authenticated %}
-                    <a href="{% url 'logout' %}" class="ml-4">Logout</a>
-                {% else %}
-                    <a href="{% url 'login' %}" class="ml-4">Login</a>
-                    <a href="{% url 'register' %}" class="ml-4">Sign Up</a>
-                {% endif %}
+
+<body class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
+    <!-- Navbar -->
+    <nav class="glass-effect border-b border-white/20 sticky top-0 z-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16 sm:h-20">
+                <!-- Logo/Brand -->
+                <div class="flex items-center">
+                    <a href="/" class="flex items-center space-x-2 smooth-transition hover:scale-105">
+                        <div
+                            class="w-8 h-8 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
+                                </path>
+                            </svg>
+                        </div>
+                        <span
+                            class="text-lg sm:text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                            Personal Expense Tracker
+                        </span>
+                    </a>
+                </div>
+
+                <!-- Navigation Links -->
+                <div class="flex items-center space-x-2 sm:space-x-4">
+                    {% if user.is_authenticated %}
+                    <!-- User Menu for Mobile -->
+                    <div class="sm:hidden">
+                        <button class="p-2 text-gray-700 hover:text-blue-600 smooth-transition">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 6h16M4 12h16M4 18h16"></path>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Desktop Menu -->
+                    <div class="hidden sm:flex items-center space-x-4">
+                        <span class="text-sm text-gray-600">Welcome back!</span>
+                        <a href="{% url 'logout' %}"
+                            class="px-4 py-2 text-gray-700 hover:text-blue-600 smooth-transition font-medium rounded-lg hover:bg-white/50">
+                            Logout
+                        </a>
+                    </div>
+
+                    <!-- Mobile Logout -->
+                    <a href="{% url 'logout' %}"
+                        class="sm:hidden px-3 py-2 text-sm text-gray-700 hover:text-blue-600 smooth-transition font-medium">
+                        Logout
+                    </a>
+                    {% else %}
+                    <a href="{% url 'login' %}"
+                        class="px-3 sm:px-4 py-2 text-gray-700 hover:text-blue-600 smooth-transition font-medium rounded-lg hover:bg-white/50">
+                        Login
+                    </a>
+                    <a href="{% url 'register' %}"
+                        class="px-3 sm:px-6 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 smooth-transition font-medium shadow-soft text-sm sm:text-base">
+                        Sign Up
+                    </a>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </nav>
-    <main class="container mx-auto mt-6">
-        {% block content %}{% endblock %}
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
+        {% block content %}
+        <!-- Default content when no specific content is provided -->
+        <div class="text-center py-20">
+            <div class="max-w-md mx-auto">
+                <div
+                    class="w-16 h-16 bg-gradient-to-r from-blue-100 to-indigo-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                </div>
+                <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">Welcome to Your Expense Tracker</h1>
+                <p class="text-gray-600 mb-8">Start managing your finances with ease and precision.</p>
+                <a href="{% url 'register' %}"
+                    class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 smooth-transition font-medium shadow-elegant">
+                    Get Started
+                    <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+        {% endblock %}
     </main>
+
+    <!-- Footer -->
+    <footer class="mt-20 border-t border-gray-200 bg-white/50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="text-center text-gray-600 text-sm">
+                <p>&copy; 2024 Personal Expense Tracker. Built with care for your financial well-being.</p>
+            </div>
+        </div>
+    </footer>
 </body>
+
 </html>

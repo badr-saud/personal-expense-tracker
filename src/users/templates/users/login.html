@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Login Page</h1>
+
+
+{% include "users/sinppets/form.html" with form=form action=path.request button="Login" %}
+
 {% endblock %}
