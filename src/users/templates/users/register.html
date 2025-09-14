@@ -1,53 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="min-h-[calc(100vh-200px)] flex items-center justify-center py-12">
-    <!-- Enhanced Form Include -->
-    {% include "users/sinppets/form.html" with form=form action=request.path button="Register" %}
+<!-- Enhanced Form Include -->
+{% include "users/sinppets/form.html" with form=form action=request.path button="Register" %}
 
-    <!-- Features Preview -->
-    <div class="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
-        <div class="p-3">
-            <div
-                class="w-10 h-10 mx-auto mb-2 bg-gradient-to-r from-green-100 to-green-200 rounded-lg flex items-center justify-center">
-                <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
-                    </path>
-                </svg>
-            </div>
-            <h3 class="font-semibold text-gray-900 text-sm">Track Expenses</h3>
-            <p class="text-xs text-gray-600 mt-1">Monitor your spending habits</p>
-        </div>
-
-        <div class="p-3">
-            <div
-                class="w-10 h-10 mx-auto mb-2 bg-gradient-to-r from-blue-100 to-blue-200 rounded-lg flex items-center justify-center">
-                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
-                    </path>
-                </svg>
-            </div>
-            <h3 class="font-semibold text-gray-900 text-sm">Visual Reports</h3>
-            <p class="text-xs text-gray-600 mt-1">Beautiful charts & insights</p>
-        </div>
-
-        <div class="p-3">
-            <div
-                class="w-10 h-10 mx-auto mb-2 bg-gradient-to-r from-purple-100 to-purple-200 rounded-lg flex items-center justify-center">
-                <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
-                    </path>
-                </svg>
-            </div>
-            <h3 class="font-semibold text-gray-900 text-sm">Secure & Private</h3>
-            <p class="text-xs text-gray-600 mt-1">Your data is protected</p>
-        </div>
-    </div>
-</div>
-</div>
 
 <!-- Additional styling for this specific page -->
 <style>

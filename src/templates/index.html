@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="min-h-[calc(100vh-200px)] flex flex-col items-center justify-center py-12 px-4">
+
+    <!-- Hero / Intro Section -->
+    <div class="max-w-2xl text-center space-y-4">
+        <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">
+            Take Control of Your Finances
+        </h1>
+        <p class="text-gray-600 text-base sm:text-lg">
+            Track expenses, visualize reports, and keep your data safe — all in one secure and easy-to-use platform.
+        </p>
+    </div>
+
+    <!-- Features Preview -->
+    <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-center w-full max-w-5xl">
+
+        <!-- Feature 1 -->
+        <div class="p-6 feature-card opacity-0 animate-fade-in-up bg-white/50 backdrop-blur rounded-xl shadow-md">
+            <div
+                class="w-12 h-12 mx-auto mb-4 bg-gradient-to-r from-green-100 to-green-200 rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
+                    </path>
+                </svg>
+            </div>
+            <h3 class="font-semibold text-gray-900 text-lg">Track Expenses</h3>
+            <p class="text-sm text-gray-600 mt-2">Monitor your spending habits</p>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="p-6 feature-card opacity-0 animate-fade-in-up bg-white/50 backdrop-blur rounded-xl shadow-md">
+            <div
+                class="w-12 h-12 mx-auto mb-4 bg-gradient-to-r from-blue-100 to-blue-200 rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                    </path>
+                </svg>
+            </div>
+            <h3 class="font-semibold text-gray-900 text-lg">Visual Reports</h3>
+            <p class="text-sm text-gray-600 mt-2">Beautiful charts & insights</p>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="p-6 feature-card opacity-0 animate-fade-in-up bg-white/50 backdrop-blur rounded-xl shadow-md">
+            <div
+                class="w-12 h-12 mx-auto mb-4 bg-gradient-to-r from-purple-100 to-purple-200 rounded-lg flex items-center justify-center">
+                <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+                    </path>
+                </svg>
+            </div>
+            <h3 class="font-semibold text-gray-900 text-lg">Secure & Private</h3>
+            <p class="text-sm text-gray-600 mt-2">Your data is protected</p>
+        </div>
+    </div>
+
+    <!-- Call-to-Action Button -->
+    <div class="mt-12">
+        <a href="{% url 'register' %}"
+            class="px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 smooth-transition font-medium shadow-lg text-base sm:text-lg">
+            Get Started for Free
+        </a>
+    </div>
+</div>
+
+<!-- Page-specific styling -->
+<style>
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .animate-fade-in-up {
+        animation: fadeInUp 0.6s ease-out forwards;
+    }
+
+    .feature-card:nth-child(1) {
+        animation-delay: 0.1s;
+    }
+
+    .feature-card:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+
+    .feature-card:nth-child(3) {
+        animation-delay: 0.3s;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const elements = document.querySelectorAll('.feature-card');
+        elements.forEach((el, index) => {
+            setTimeout(() => {
+                el.classList.remove('opacity-0');
+            }, index * 150);
+        });
+    });
+</script>
+{% endblock %}
