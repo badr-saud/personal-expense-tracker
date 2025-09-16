@@ -39,4 +39,22 @@ def get_timezones_for_country(country_code):
     Returns (tz, tz) choices for a specific country.
     Falls back to UTC if no timezones are found.
     """
-    return [(tz, tz) for tz in pytz.country_timezones.get(country_code, ["UTC"])]
+    try:
+        timezones = pytz.country_timezones(country_code)
+        return [
+            (tz, tz.replace("_", " ")) for tz in timezones
+        ]  # Optional: make labels prettier
+    except KeyError:
+        return [("UTC", "UTC")]
+
+
+def get_country_iso(country_name: str) -> str | None:
+    """
+    Returns the ISO 3166-1 alpha-2 code (e.g., 'US', 'MA') for a given country name.
+    Returns None if the country is not found.
+    """
+    try:
+        country = pycountry.countries.lookup(country_name)
+        return country.alpha_2
+    except LookupError:
+        return None

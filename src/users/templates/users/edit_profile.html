@@ -5,7 +5,7 @@
     <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-md border border-white/20 p-8">
         <h1 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-6">Edit Profile</h1>
 
-        <form method="post" class="space-y-6">
+    <form method="post" class="space-y-6" action="{% url 'profile_edit' %}">
             {% csrf_token %}
 
             <!-- User Form -->
@@ -14,6 +14,9 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">
                             {{ field.label }}
+                          {% if field.field.required %}
+                          <span class="text-red-500">*</span>
+                          {% endif %}
                         </label>
                         {{ field }}
                         {% if field.errors %}
@@ -29,6 +32,10 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">
                             {{ field.label }}
+                          {% if field.field.required %}
+                          <span class="text-red-500">*</span>
+                          {% endif %}
+ 
                         </label>
                         {{ field }}
                         {% if field.errors %}
@@ -47,4 +54,60 @@
         </form>
     </div>
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const countryElement = document.getElementById("id_country");
+    const timezoneElement = document.getElementById("id_timezone");
+
+    if (!countryElement || !timezoneElement) {
+        console.warn("Country or timezone field not found");
+        return;
+    }
+
+    const timezoneUrl = "{% url 'get_timezones' %}";
+
+    function updateTimezoneChoices() {
+        const country = countryElement.value;
+
+        if (!country) {
+            timezoneElement.disabled = true;
+            timezoneElement.innerHTML = '<option value="">Select a country first</option>';
+            return;
+        }
+
+        timezoneElement.disabled = false;
+        timezoneElement.innerHTML = '<option value="">Loading...</option>';
+
+        fetch(`${timezoneUrl}?country=${encodeURIComponent(country)}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                timezoneElement.innerHTML = '<option value="">---------</option>';
+
+                if (data.timezones && data.timezones.length > 0) {
+                    data.timezones.forEach(tz => {
+                        const option = document.createElement("option");
+                        option.value = tz.value;
+                        option.textContent = tz.label;
+                        timezoneElement.appendChild(option);
+                    });
+                } else {
+                    timezoneElement.innerHTML = '<option value="">No timezones available</option>';
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching timezones:", error);
+                timezoneElement.innerHTML = '<option value="">Error loading timezones</option>';
+            });
+    }
+
+    // Update when country changes
+    countryElement.addEventListener('change', updateTimezoneChoices);
+});
+</script>
 {% endblock %}

@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 
 from users.models import UserProfile
+from users.utils import (get_country_iso, get_timezone_choices,
+                         get_timezones_for_country)
 
 
 class UserCreationFrom(forms.ModelForm):
@@ -90,10 +92,17 @@ class UserLoginForm(forms.Form):
 
 
 class UserProfileForm(forms.ModelForm):
+    timezone = forms.ChoiceField(
+        widget=forms.Select(
+            attrs={
+                "class": "w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            }
+        )
+    )
+
     class Meta:
         model = UserProfile
         fields = ["country", "currency", "timezone"]
-
         widgets = {
             "country": forms.Select(
                 attrs={
@@ -105,15 +114,48 @@ class UserProfileForm(forms.ModelForm):
                     "class": "w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 }
             ),
-            "timezone": forms.Select(
-                attrs={
-                    "class": "w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                }
-            ),
+            # No need to repeat timezone widget here — already defined above
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        country = None
+        if self.instance and self.instance.pk:  # from existing instance
+            country = self.instance.country
+        elif self.data:  # coming from POST/GET
+            country = self.data.get("country")
+        elif self.initial:  # from initial data
+            country = self.initial.get("country")
+
+        # Set timezone choices based on country or default
+        if country:
+            choices = get_timezones_for_country(country)
+        else:
+            choices = get_timezone_choices()
+
+        # Ensure choices is a valid list of tuples
+        if not choices:
+            choices = [("", "---------")]  # fallback to empty option
+
+        self.fields["timezone"].choices = choices
+
+        # Optional: Set initial value if instance exists
+        if self.instance and self.instance.pk and self.instance.timezone:
+            self.fields["timezone"].initial = self.instance.timezone
 
 
 class UserForm(forms.ModelForm):
+    email = forms.EmailField(
+        required=True,
+        widget=forms.EmailInput(
+            attrs={
+                "class": "w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500",
+                "placeholder": "Enter your email",
+            }
+        ),
+    )
+
     class Meta:
         model = User
         fields = ["first_name", "last_name", "email"]
@@ -121,19 +163,13 @@ class UserForm(forms.ModelForm):
             "first_name": forms.TextInput(
                 attrs={
                     "class": "w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500",
-                    "placeholder": "Enter your username",
+                    "placeholder": "Enter your first name",
                 }
             ),
             "last_name": forms.TextInput(
                 attrs={
                     "class": "w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500",
-                    "placeholder": "Enter your username",
-                }
-            ),
-            "email": forms.EmailInput(
-                attrs={
-                    "class": "w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500",
-                    "placeholder": "Enter your email",
+                    "placeholder": "Enter your last name",
                 }
             ),
         }

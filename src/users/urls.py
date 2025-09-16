@@ -1,6 +1,6 @@
 from django.urls import path
 
-from users.views import login_view, logout_view, profile_edit, register, home, profile
+from users.views import get_timezone_for_country_view, login_view, logout_view, profile_edit, register, home, profile
 
 
 urlpatterns = [
@@ -10,5 +10,7 @@ urlpatterns = [
     path("logout/", logout_view, name="logout"),
     path("profile-edit/", profile_edit, name="profile_edit"),
     path("profile/", profile, name="profile"),
+    # url for getting a list of timezones for a specific country 
+    path("ajax/get-timezones/", get_timezone_for_country_view, name="get_timezones"),
 
 ]

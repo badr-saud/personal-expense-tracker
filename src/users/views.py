@@ -1,13 +1,29 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required 
+from django.http import JsonResponse
+from django.views.decorators.http import require_GET 
 from django.shortcuts import redirect, render
 
 from users.forms import (UserCreationFrom, UserForm, UserLoginForm,
                          UserProfileForm)
+from users.models import UserProfile
+from users.utils import get_timezones_for_country
 
 
 # Create your views here.
+@require_GET
+def get_timezone_for_country_view(request):
+    """endpoint to get the timezones for a specific country (for profile edit and JS)"""
+    country = request.GET.get("country")
+    if not country:
+        return JsonResponse({"error": "country code required"}, status=400)
+
+    choices = get_timezones_for_country(country)
+    timezones = [{"value": tz[0], "label": tz[1]} for tz in choices]
+    return JsonResponse({"timezones": timezones})
+
+
 @login_required(login_url="login")
 def home(request):
     return render(request, "users/home.html")
@@ -21,7 +37,7 @@ def profile(request):
 @login_required(login_url="login")
 def profile_edit(request):
     user = request.user
-    profile = user.profile
+    profile, created = UserProfile.objects.get_or_create(user=user)
     if request.method == "POST":
         profile_form = UserProfileForm(request.POST, request.FILES, instance=profile)
         user_form = UserForm(request.POST, request.FILES, instance=user)

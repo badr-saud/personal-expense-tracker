@@ -13,7 +13,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
     country = models.CharField(choices=get_country_choices())
     currency = models.CharField(max_length=100, choices=choices)
-    timezone = models.CharField(choices=get_timezone_choices())
+    timezone = models.CharField(max_length=100)
 
 
     def __str__(self):
